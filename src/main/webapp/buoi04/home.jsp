@@ -35,7 +35,7 @@
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="home.jsp">Trang chủ</a></li>
+					<li><a href="home.jsp">Trang chủ</a></li>
 			       <li><a href="htgio.jsp">Giỏ hàng(0)</a></li>
 			       <li><a href="xacnhan.jsp">Xác nhận đặt mua</a></li>
 			       <li><a href="lichsu.jsp">Lịch sử mua hàng</a></li>
@@ -79,13 +79,20 @@
 			<div class="col-md-8">
 				<!-- Hiển thị sách -->
 				<%
+				request.setCharacterEncoding("UTF-8"); // Chuyển đổi sang tiếng việt
+				response.setCharacterEncoding("UTF-8");
+				
 				SachBO sbo = new SachBO();
 				ArrayList<Sach> ds = sbo.getSach();
-				//tìm kiếm mã loại
-				String ml = request.getParameter("ml");
+				
+				String ml = request.getParameter("ml"); //tìm kiếm mã loại
+				String key = request.getParameter("txttk"); // tìm kiếm sách
+				
 				if (ml != null)
 					ds = sbo.TimMa(ml);
-
+				else if (key != null)
+					ds = sbo.Tim(key);
+				
 				int n = ds.size();
 				for (int i = 0; i < n; i++) {
 					Sach s = ds.get(i);
@@ -98,7 +105,7 @@
 						<%=s.getGia()%>
 						<br> 
 						<a href="giohang.jsp?ms=<%=s.getMaSach()%>&ts=<%=s.getTenSach()%>&gia=<%=s.getGia()%>">
-							<img src="buynow.jpg">
+							<button class="btn btn-primary" type="submit">Đặt hàng</button>
 						</a> 
 					</div>
 					<%
@@ -113,7 +120,7 @@
 						<%=s.getGia()%>
 						<br> 
 						<a href="giohang.jsp?ms=<%=s.getMaSach()%>&ts=<%=s.getTenSach()%>&gia=<%=s.getGia()%>">
-							<img src="buynow.jpg">
+							<button class="btn btn-primary" type="submit">Đặt hàng</button>
 						</a> 
 					</div>
 					<%
@@ -131,7 +138,7 @@
 						<%=s.getGia()%>
 						<br> 
 						<a href="giohang.jsp?ms=<%=s.getMaSach()%>&ts=<%=s.getTenSach()%>&gia=<%=s.getGia()%>">
-							<img src="buynow.jpg">
+							<button class="btn btn-primary" type="submit">Đặt hàng</button>
 						</a>
 					</div>
 					<%
@@ -144,9 +151,9 @@
 			</div>
 			<div class="col-md-2">
 				<!-- Tìm kiếm -->
-				<form action="home.jsp">
+				<form action="home.jsp" method="post">
 					<div class="input-group">
-						<input type="text" class="form-control" placeholder="Search">
+						<input type="text" name="txttk" class="form-control" placeholder="Search">
 						<div class="input-group-btn">
 							<button class="btn btn-default" type="submit">
 								<i class="glyphicon glyphicon-search"></i>

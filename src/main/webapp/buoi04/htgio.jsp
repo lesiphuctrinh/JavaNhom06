@@ -35,7 +35,7 @@
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="home.jsp">Trang chủ</a></li>
+					<li><a href="home.jsp">Trang chủ</a></li>
 					<li><a href="htgio.jsp">Giỏ hàng(0)</a></li>
 					<li><a href="xacnhan.jsp">Xác nhận đặt mua</a></li>
 					<li><a href="lichsu.jsp">Lịch sử mua hàng</a></li>
@@ -77,8 +77,8 @@
 				<form action="xoasua.jsp" method="post">
 					<table class="table table-hover table-bordered">
 						<%giohangbo gh=(giohangbo)session.getAttribute("gh");
-           if(gh!=null){
-            for(hang h: gh.ds){%>
+			           if(gh!=null){
+			            for(hang h: gh.ds){%>
 						<tr>
 							<td><input type="checkbox" name="ck"
 								value="<%=h.getMasach()%>"></td>
@@ -88,27 +88,29 @@
 							<td><input type="number" name="<%=h.getMasach() %>"
 								value="0" style="width: 50px" class="form-control">
 								<button type="submit" name="butsuasl" value="<%=h.getMasach()%>"
-									class="btn-link">Sua</button></td>
-							<td><%=h.getThanhtien() %></td>
-							<td><a href="xoasua.jsp?msxoa=<%=h.getMasach()%>">Xoa</a></td>
+									class="btn btn-warning">Sửa</button></td>
+							<td><%=h.getThanhtien()%></td>
+							<td class="text-center"><a href="xoasua.jsp?msxoa=<%=h.getMasach()%>" class="btn btn-danger">
+							 	Xóa
+							</a></td>
 						</tr>
 
 						<% } }
          %>
 					</table>
-					<input type="submit" name="xoachon" value="Xoa" class="btn-link">
-					<input type="submit" name="xoaall" value="Huy gio hang"
-						class="btn-link"> 
+					<input type="submit" name="xoachon" value="Xóa" class="btn btn-danger">
+					<input type="submit" name="xoaall" value="Hủy giỏ hàng"
+						class="btn btn-danger"> 
 					<input type="submit" name="xacnhan"
-						value="Dat hang" class="btn-link">
+						value="Đặt hàng" class="btn btn-primary">
 				</form>
-				<%if(gh!=null)out.print("Tong thanh tien: "+ gh.Tong()); %>
+				<%if(gh!=null)out.print("Tổng thành tiền: "+ gh.Tong()); %>
 			</div>
 			<div class="col-sm-2">
 				<!-- Tìm kiếm -->
-				<form action="home.jsp">
+				<form action="home.jsp" method="post">
 					<div class="input-group">
-						<input type="text" class="form-control" placeholder="Search">
+						<input type="text" name="txttk" class="form-control" placeholder="Search">
 						<div class="input-group-btn">
 							<button class="btn btn-default" type="submit">
 								<i class="glyphicon glyphicon-search"></i>
