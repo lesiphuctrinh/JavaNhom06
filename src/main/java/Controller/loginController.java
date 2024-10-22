@@ -39,8 +39,9 @@ public class loginController extends HttpServlet {
 					session.setAttribute("dn", username);
 			        response.sendRedirect("sachController");
 			        return;
-			    }  else
-			    		request.setAttribute("tb", "Đăng nhập sai. Vui lòng nhập lại!");
+			    }  
+				else
+			    	request.setAttribute("tb", "Đăng nhập sai. Vui lòng nhập lại!");
 			}
 			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
 			rd.forward(request, response);

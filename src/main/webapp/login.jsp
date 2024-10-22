@@ -7,9 +7,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-
 	<h2>SINH VIÊN</h2>
-	<form action="sachController" method="post">
+	<form action="loginController" method="post">
 		<label for="dangnhap">Tên đăng nhập:</label> <br>
 		<input type="text" name="dangnhap" placeholder="Mã sinh viên/Email"> <br>
 		<label for="matkhau">Mật khẩu:</label> <br>
