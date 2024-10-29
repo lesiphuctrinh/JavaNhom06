@@ -1,4 +1,5 @@
 
+<%@page import="java.util.ArrayList"%>
 <%@page import="giohangModal.hang"%>
 <%@page import="giohangModal.giohangbo"%>
 <%@page import="LoaiModal.Loai"%>
@@ -31,22 +32,22 @@
 					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="home.jsp">PT Shop</a>
+				<a class="navbar-brand" href="homeController">PT Shop</a>
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
-					<li><a href="home.jsp">Trang chủ</a></li>
-					<li><a href="htgio.jsp">Giỏ hàng(0)</a></li>
-					<li><a href="xacnhan.jsp">Xác nhận đặt mua</a></li>
-					<li><a href="lichsu.jsp">Lịch sử mua hàng</a></li>
+					<li><a href="homeController">Trang chủ</a></li>
+					<li><a href="htgioController">Giỏ hàng(0)</a></li>
+					<li><a href="xacnhanController">Xác nhận đặt mua</a></li>
+					<li><a href="lichsuController">Lịch sử mua hàng</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="logout.jsp"><span
+					<li><a href="logoutController"><span
 							class="glyphicon glyphicon-user"></span> Logout</a></li>
 					<%
 					if (session.getAttribute("dn") == null) {
 					%>
-					<li><a href="login.jsp"><span
+					<li><a href="loginController"><span
 							class="glyphicon glyphicon-log-in"></span> Login</a></li>
 					<%
 					} else {
@@ -63,18 +64,21 @@
 
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-sm-2">
+			<div class="col-md-2">
+				<!-- Hiển thị loại -->
 				<%
-         LoaiBO lbo= new LoaiBO();
-         for(Loai l: lbo.getLoai()){
-      %>
-				<a href="home.jsp?ml=<%=l.getMaLoai()%>"> <%=l.getTenLoai() %>
+				ArrayList<Loai> dsloai = (ArrayList<Loai>)request.getAttribute("dsloai");
+				for (Loai l : dsloai) {
+				%>
+				<a href="sachController?ml=<%=l.getMaLoai()%>"> <%=l.getTenLoai()%>
 					<hr>
 				</a>
-				<%} %>
+				<%
+				}
+				%>
 			</div>
 			<div class="col-sm-8">
-				<form action="xoasua.jsp" method="post">
+				<form action="xoasuaController" method="post">
 					<table class="table table-hover table-bordered">
 						<%giohangbo gh=(giohangbo)session.getAttribute("gh");
 			           if(gh!=null){
@@ -90,7 +94,7 @@
 								<button type="submit" name="butsuasl" value="<%=h.getMasach()%>"
 									class="btn btn-warning">Sửa</button></td>
 							<td><%=h.getThanhtien()%></td>
-							<td class="text-center"><a href="xoasua.jsp?msxoa=<%=h.getMasach()%>" class="btn btn-danger">
+							<td class="text-center"><a href="xoasuaController?msxoa=<%=h.getMasach()%>" class="btn btn-danger">
 							 	Xóa
 							</a></td>
 						</tr>
