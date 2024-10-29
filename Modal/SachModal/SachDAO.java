@@ -1,21 +1,38 @@
 package SachModal;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
+import LoaiModal.Loai;
+import ketnoiModal.KetNoi;
+
 public class SachDAO {
-	public ArrayList<Sach> getSach(){
+	public ArrayList<Sach> getSach() throws ClassNotFoundException, SQLException {
 		ArrayList<Sach> ds = new ArrayList<>();
-		ds.add(new Sach("ma01", "Toán đại", "Nguyễn Gia Định", (long)10, (long)89000, "image_sach/c6.jpg", "toan"));
-		ds.add(new Sach("ma02", "Công nghệ thông tin", "Nguyễn Hoàng Hà", (long)70, (long)189000, "image_sach/c1.jpg", "cntt"));
-		ds.add(new Sach("ma03", "Công nghệ thông tin", "Nguyễn Hoàng Hà", (long)70, (long)189000, "image_sach/c1.jpg", "cntt"));
-		ds.add(new Sach("ma04", "Công nghệ thông tin", "Nguyễn Hoàng Hà", (long)70, (long)189000, "image_sach/c1.jpg", "cntt"));
-		ds.add(new Sach("ma05", "Chính trị", "Mác Lê-nin", (long)30, (long)59000, "image_sach/b25.jpg", "ct"));
-		ds.add(new Sach("ma06", "Công nghệ sinh học", "Xuân linh", (long)60, (long)69000, "image_sach/c8.jpg", "sinh"));
-		ds.add(new Sach("ma07", "Vật lý", "Gia Hân", (long)110, (long)49000, "image_sach/c2.jpg", "ly"));
-		ds.add(new Sach("ma08", "Toán hình", "Nguyễn Ngọc Thiện", (long)110, (long)78000, "image_sach/c11.jpg", "toan"));
-		ds.add(new Sach("ma09", "Công nghệ vi phân", "Nguyễn Bính", (long)60, (long)99000, "image_sach/c12.jpg", "sinh"));
-		ds.add(new Sach("ma10", "Phương pháp tính", "Nguyễn Hải", (long)60, (long)119000, "image_sach/c9.jpg", "toan"));
+		// b1: kết nối
+		KetNoi kn = new KetNoi();
+		kn.ketnoi();
+		// b2: tạo câu lệnh sql
+		String sql = "select * from sach";
+		// b3: thực hiện câu lệnh
+		PreparedStatement cmd = kn.cn.prepareStatement(sql);
+		ResultSet rs = cmd.executeQuery();
+		// b4: Duyệt qua rs để chuyển dữ liệu sang mang: maping
+		while (rs.next()) {
+			String masach = rs.getString("masach");
+			String tensach = rs.getString("tensach");
+			String tacgia = rs.getString("tacgia");
+			Long soluong = rs.getLong("soluong");
+			Long gia = rs.getLong("gia");
+			String anh = rs.getString("anh");
+			String maloai = rs.getString("maloai");
+			ds.add(new Sach(masach,tensach,tacgia,soluong, gia, anh, maloai));
+		}
+		rs.close();
+		kn.cn.close();
 		return ds;
-		
+
 	}
 }

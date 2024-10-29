@@ -1,11 +1,12 @@
 package SachModal;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class SachBO {
 	SachDAO sdao = new SachDAO();
 	ArrayList<Sach> ds;
-	public ArrayList<Sach> getSach(){
+	public ArrayList<Sach> getSach() throws ClassNotFoundException, SQLException{
 		ds = sdao.getSach();
 		return ds;
 	}

@@ -33,28 +33,32 @@ public class sachController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8"); // Chuyển đổi sang tiếng việt
-		response.setCharacterEncoding("UTF-8");
-		
-		// Lấy loại về
-		LoaiBO lbo = new LoaiBO();
-		
-		//Chuyển dsloại sang home.jsp để hiển thị
-		request.setAttribute("dsloai", lbo.getLoai());
-		SachBO sbo = new SachBO();
-		ArrayList<Sach> ds = sbo.getSach();
-		
-		String ml = request.getParameter("ml"); //tìm kiếm mã loại
-		String key = request.getParameter("txttk"); // tìm kiếm sách
-		
-		if (ml != null)
-			ds = sbo.TimMa(ml);
-		else if (key != null)
-			ds = sbo.Tim(key);
-		
-		request.setAttribute("dssach", ds);
-		RequestDispatcher rd = request.getRequestDispatcher("home.jsp");
-		rd.forward(request, response);
+		try {
+			request.setCharacterEncoding("UTF-8"); // Chuyển đổi sang tiếng việt
+			response.setCharacterEncoding("UTF-8");
+			
+			// Lấy loại về
+			LoaiBO lbo = new LoaiBO();
+			
+			//Chuyển dsloại sang home.jsp để hiển thị
+			request.setAttribute("dsloai", lbo.getLoai());
+			SachBO sbo = new SachBO();
+			ArrayList<Sach> ds = sbo.getSach();
+			
+			String ml = request.getParameter("ml"); //tìm kiếm mã loại
+			String key = request.getParameter("txttk"); // tìm kiếm sách
+			
+			if (ml != null)
+				ds = sbo.TimMa(ml);
+			else if (key != null)
+				ds = sbo.Tim(key);
+			
+			request.setAttribute("dssach", ds);
+			RequestDispatcher rd = request.getRequestDispatcher("home.jsp");
+			rd.forward(request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**

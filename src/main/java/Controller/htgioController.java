@@ -30,11 +30,15 @@ public class htgioController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		LoaiBO lbo = new LoaiBO();
-		request.setAttribute("dsloai", lbo.getLoai());
-		
-		RequestDispatcher rd = request.getRequestDispatcher("htgio.jsp");
- 		rd.forward(request, response);
+		try {
+			LoaiBO lbo = new LoaiBO();
+			request.setAttribute("dsloai", lbo.getLoai());
+			
+			RequestDispatcher rd = request.getRequestDispatcher("htgio.jsp");
+	 		rd.forward(request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
