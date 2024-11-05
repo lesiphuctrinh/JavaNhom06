@@ -1,4 +1,5 @@
 
+<%@page import="khachhangModal.KhachHang"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="giohangModal.hang"%>
 <%@page import="giohangModal.giohangbo"%>
@@ -51,9 +52,10 @@
 							class="glyphicon glyphicon-log-in"></span> Login</a></li>
 					<%
 					} else {
+						KhachHang kh = (KhachHang)session.getAttribute("dn");
 					%>
 					<li><a href="#"><span class="glyphicon glyphicon-log-in"></span>
-							Xin chào : <%=session.getAttribute("dn")%></a></li>
+							Xin chào : <%=kh.getHoten()%></a></li>
 					<%
 					}
 					%>
@@ -105,10 +107,16 @@
 					<input type="submit" name="xoachon" value="Xóa" class="btn btn-danger">
 					<input type="submit" name="xoaall" value="Hủy giỏ hàng"
 						class="btn btn-danger"> 
-					<input type="submit" name="xacnhan"
-						value="Đặt hàng" class="btn btn-primary">
+						
+					<!--<input type="submit" name="xacnhan"> 
+						value="Đặt hàng" class="btn btn-primary"> -->
 				</form>
 				<%if(gh!=null)out.print("Tổng thành tiền: "+ gh.Tong()); %>
+				
+				<form method="post" action="xacnhanController" class="mt-2">
+					<input type="submit" name= "but" value="Xác nhận" class="btn btn-primary" > 
+				</form>
+								
 			</div>
 			<div class="col-sm-2">
 				<!-- Tìm kiếm -->

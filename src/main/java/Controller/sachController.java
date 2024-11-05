@@ -19,54 +19,66 @@ import SachModal.SachBO;
  */
 @WebServlet("/sachController")
 public class sachController extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
+    private static final long serialVersionUID = 1L;
+
     /**
      * @see HttpServlet#HttpServlet()
      */
     public sachController() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
-			request.setCharacterEncoding("UTF-8"); // Chuyển đổi sang tiếng việt
-			response.setCharacterEncoding("UTF-8");
-			
-			// Lấy loại về
-			LoaiBO lbo = new LoaiBO();
-			
-			//Chuyển dsloại sang home.jsp để hiển thị
-			request.setAttribute("dsloai", lbo.getLoai());
-			SachBO sbo = new SachBO();
-			ArrayList<Sach> ds = sbo.getSach();
-			
-			String ml = request.getParameter("ml"); //tìm kiếm mã loại
-			String key = request.getParameter("txttk"); // tìm kiếm sách
-			
-			if (ml != null)
-				ds = sbo.TimMa(ml);
-			else if (key != null)
-				ds = sbo.Tim(key);
-			
-			request.setAttribute("dssach", ds);
-			RequestDispatcher rd = request.getRequestDispatcher("home.jsp");
-			rd.forward(request, response);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            request.setCharacterEncoding("UTF-8"); // Chuyển đổi sang tiếng việt
+            response.setCharacterEncoding("UTF-8");
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
+            // Lấy loại về
+            LoaiBO lbo = new LoaiBO();
+            request.setAttribute("dsloai", lbo.getLoai());
 
+            // Khởi tạo SachBO và lấy danh sách sách
+            SachBO sbo = new SachBO();
+            ArrayList<Sach> ds = sbo.getSach();
+
+            String ml = request.getParameter("ml"); // Tìm kiếm mã loại
+            String key = request.getParameter("txttk"); // Tìm kiếm sách
+
+            // Lọc sách theo loại hoặc theo từ khóa
+            if (ml != null) {
+                ds = sbo.TimMa(ml);
+            } else if (key != null) {
+                ds = sbo.Tim(key);
+            }
+
+            // Phân trang
+            int totalItems = ds.size(); // Tổng số sách
+            int itemsPerPage = 6; // Số sách mỗi trang
+            int currentPage = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
+            int totalPages = (int) Math.ceil((double) totalItems / itemsPerPage);
+            int startIndex = (currentPage - 1) * itemsPerPage;
+            int endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+
+            // Lấy danh sách sách cho trang hiện tại
+            ArrayList<Sach> paginatedList = new ArrayList<>(ds.subList(startIndex, endIndex));
+
+            request.setAttribute("dssach", paginatedList);
+            request.setAttribute("currentPage", currentPage);
+            request.setAttribute("totalPages", totalPages);
+            RequestDispatcher rd = request.getRequestDispatcher("home.jsp");
+            rd.forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doGet(request, response);
+    }
 }

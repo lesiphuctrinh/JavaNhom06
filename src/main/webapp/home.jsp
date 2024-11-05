@@ -1,3 +1,4 @@
+<%@page import="khachhangModal.KhachHang"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="SachModal.Sach"%>
 <%@page import="SachModal.SachBO"%>
@@ -19,9 +20,8 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-<%
+	<%
 	session.setAttribute("trang", "homeController");
-	
  %>
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
@@ -36,9 +36,9 @@
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
 					<li><a href="homeController">Trang chủ</a></li>
-			       <li><a href="htgioController">Giỏ hàng(0)</a></li>
-			       <li><a href="xacnhanController">Xác nhận đặt mua</a></li>
-			       <li><a href="lichsuController">Lịch sử mua hàng</a></li>
+					<li><a href="htgioController">Giỏ hàng(0)</a></li>
+					<li><a href="xacnhanController">Xác nhận đặt mua</a></li>
+					<li><a href="lichsuController">Lịch sử mua hàng</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="logoutController"><span
@@ -50,9 +50,10 @@
 							class="glyphicon glyphicon-log-in"></span> Login</a></li>
 					<%
 					} else {
+						KhachHang kh = (KhachHang)session.getAttribute("dn");
 					%>
 					<li><a href="#"><span class="glyphicon glyphicon-log-in"></span>
-							Xin chào : <%=session.getAttribute("dn")%></a></li>
+							Xin chào : <%=kh.getHoten()%></a></li>
 					<%
 					}
 					%>
@@ -86,14 +87,14 @@
 				%>
 				<div class="row">
 					<div class="col-md-4">
-						<img src="<%=s.getAnh()%>"> <br>
+						<img src="<%=s.getAnh()%>" class="img-fluid img-thumbnail" alt="Responsive image"> <br>
 						<%=s.getTenSach()%>
 						<br>
 						<%=s.getGia()%>
-						<br> 
-						<a href="giohangController?ms=<%=s.getMaSach()%>&ts=<%=s.getTenSach()%>&gia=<%=s.getGia()%>">
+						<br> <a
+							href="giohangController?ms=<%=s.getMaSach()%>&ts=<%=s.getTenSach()%>&gia=<%=s.getGia()%>">
 							<button class="btn btn-primary" type="submit">Đặt hàng</button>
-						</a> 
+						</a>
 					</div>
 					<%
 					i++;
@@ -101,14 +102,14 @@
 						s = ds.get(i);
 					%>
 					<div class="col-md-4">
-						<img src="<%=s.getAnh()%>"> <br>
+						<img src="<%=s.getAnh()%>" class="img-fluid img-thumbnail" alt="Responsive image"> <br>
 						<%=s.getTenSach()%>
 						<br>
 						<%=s.getGia()%>
-						<br> 
-						<a href="giohangController?ms=<%=s.getMaSach()%>&ts=<%=s.getTenSach()%>&gia=<%=s.getGia()%>">
+						<br> <a
+							href="giohangController?ms=<%=s.getMaSach()%>&ts=<%=s.getTenSach()%>&gia=<%=s.getGia()%>">
 							<button class="btn btn-primary" type="submit">Đặt hàng</button>
-						</a> 
+						</a>
 					</div>
 					<%
 					}
@@ -119,12 +120,12 @@
 						s = ds.get(i);
 					%>
 					<div class="col-md-4">
-						<img src="<%=s.getAnh()%>"> <br>
+						<img src="<%=s.getAnh()%>" class="img-fluid img-thumbnail" alt="Responsive image"> <br>
 						<%=s.getTenSach()%>
 						<br>
 						<%=s.getGia()%>
-						<br> 
-						<a href="giohangController?ms=<%=s.getMaSach()%>&ts=<%=s.getTenSach()%>&gia=<%=s.getGia()%>">
+						<br> <a
+							href="giohangController?ms=<%=s.getMaSach()%>&ts=<%=s.getTenSach()%>&gia=<%=s.getGia()%>">
 							<button class="btn btn-primary" type="submit">Đặt hàng</button>
 						</a>
 					</div>
@@ -135,12 +136,119 @@
 				<%
 				}
 				%>
+				
+				<!-- Phân trang -->
+				<div class="row">
+					<nav aria-label="Page navigation example" class="text-center">
+						<ul class="pagination justify-content-center">
+							<%
+            int totalPages = (Integer) request.getAttribute("totalPages");
+            int currentPage = (Integer) request.getAttribute("currentPage");
+            int maxDisplay = 20; // Giới hạn số trang tối đa hiển thị
+
+            // Xử lý nút "<<"
+            if (currentPage > 1) {
+            %>
+							<li><a href="?page=<%= currentPage - 1 %>"><<</a></li>
+							<%
+            } else {
+            %>
+							<li class="disabled"><a href="#"><<</a></li>
+							<%
+            }
+
+            // Hiển thị phân trang rút gọn nếu tổng số trang lớn hơn maxDisplay
+            if (totalPages > maxDisplay) {
+                // Hiển thị trang đầu
+                for (int i = 1; i <= 2; i++) {
+                    if (i == currentPage) {
+            %>
+							<li class="active"><a href="?page=<%= i %>"><%= i %></a></li>
+							<%
+                    } else {
+            %>
+							<li><a href="?page=<%= i %>"><%= i %></a></li>
+							<%
+                    }
+                }
+                
+                // Hiển thị dấu "..." sau các trang đầu
+                if (currentPage > 5) {
+            %>
+							<li class="disabled"><a href="#">...</a></li>
+							<%
+                }
+
+                // Hiển thị các trang gần trang hiện tại
+                for (int i = Math.max(3, currentPage - 2); i <= Math.min(totalPages - 2, currentPage + 2); i++) {
+                    if (i == currentPage) {
+            %>
+							<li class="active"><a href="?page=<%= i %>"><%= i %></a></li>
+							<%
+                    } else {
+            %>
+							<li><a href="?page=<%= i %>"><%= i %></a></li>
+							<%
+                    }
+                }
+
+                // Hiển thị dấu "..." trước các trang cuối
+                if (currentPage < totalPages - 4) {
+            %>
+							<li class="disabled"><a href="#">...</a></li>
+							<%
+                }
+
+                // Hiển thị hai trang cuối
+                for (int i = totalPages - 1; i <= totalPages; i++) {
+                    if (i == currentPage) {
+            %>
+							<li class="active"><a href="?page=<%= i %>"><%= i %></a></li>
+							<%
+                    } else {
+            %>
+							<li><a href="?page=<%= i %>"><%= i %></a></li>
+							<%
+                    }
+                }
+
+            } else { 
+                // Hiển thị toàn bộ các trang nếu tổng số trang <= maxDisplay
+                for (int i = 1; i <= totalPages; i++) {
+                    if (i == currentPage) {
+            %>
+							<li class="active"><a href="?page=<%= i %>"><%= i %></a></li>
+							<%
+                    } else {
+            %>
+							<li><a href="?page=<%= i %>"><%= i %></a></li>
+							<%
+                    }
+                }
+            }
+
+            // Xử lý nút ">>"
+            if (currentPage < totalPages) {
+            %>
+							<li><a href="?page=<%= currentPage + 1 %>">>></a></li>
+							<%
+            } else {
+            %>
+							<li class="disabled"><a href="#">>></a></li>
+							<%
+            }
+            %>
+						</ul>
+					</nav>
+				</div>
+
 			</div>
 			<div class="col-md-2">
 				<!-- Tìm kiếm -->
 				<form action="sachController" method="post">
 					<div class="input-group">
-						<input type="text" name="txttk" class="form-control" placeholder="Search">
+						<input type="text" name="txttk" class="form-control"
+							placeholder="Search">
 						<div class="input-group-btn">
 							<button class="btn btn-default" type="submit">
 								<i class="glyphicon glyphicon-search"></i>
