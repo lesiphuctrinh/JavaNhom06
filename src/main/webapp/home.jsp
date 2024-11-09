@@ -36,7 +36,11 @@
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
 					<li><a href="homeController">Trang chủ</a></li>
-					<li><a href="htgioController">Giỏ hàng(0)</a></li>
+					<li><a href="htgioController">Giỏ hàng
+					(
+					<%= session.getAttribute("giohangCount") != null ? session.getAttribute("giohangCount") : 0 %>
+					)
+					</a></li>
 					<li><a href="xacnhanController">Xác nhận đặt mua</a></li>
 					<li><a href="lichsuController">Lịch sử mua hàng</a></li>
 				</ul>
@@ -142,8 +146,8 @@
 					<nav aria-label="Page navigation example" class="text-center">
 						<ul class="pagination justify-content-center">
 							<%
-            int totalPages = (Integer) request.getAttribute("totalPages");
-            int currentPage = (Integer) request.getAttribute("currentPage");
+            int totalPages = (Integer) request.getAttribute("totalPages"); // tổng số trang
+            int currentPage = (Integer) request.getAttribute("currentPage"); // trang hiện tại
             int maxDisplay = 20; // Giới hạn số trang tối đa hiển thị
 
             // Xử lý nút "<<"

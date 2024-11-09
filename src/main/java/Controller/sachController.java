@@ -33,43 +33,53 @@ public class sachController extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            request.setCharacterEncoding("UTF-8"); // Chuyển đổi sang tiếng việt
+            request.setCharacterEncoding("UTF-8"); // Chuyển đổi sang tiếng Việt
             response.setCharacterEncoding("UTF-8");
 
-            // Lấy loại về
+            // Lấy danh sách loại sách
             LoaiBO lbo = new LoaiBO();
             request.setAttribute("dsloai", lbo.getLoai());
 
-            // Khởi tạo SachBO và lấy danh sách sách
+            // Khởi tạo SachBO
             SachBO sbo = new SachBO();
-            ArrayList<Sach> ds = sbo.getSach();
 
-            String ml = request.getParameter("ml"); // Tìm kiếm mã loại
-            String key = request.getParameter("txttk"); // Tìm kiếm sách
+            // Nhận giá trị tìm kiếm
+            String searchValue = request.getParameter("txttk") != null ? request.getParameter("txttk") : ""; // Tìm theo từ khóa
+            String ml = request.getParameter("ml"); // Tìm theo mã loại
 
-            // Lọc sách theo loại hoặc theo từ khóa
-            if (ml != null) {
-                ds = sbo.TimMa(ml);
-            } else if (key != null) {
-                ds = sbo.Tim(key);
+            // Khởi tạo danh sách sách
+            ArrayList<Sach> ds = new ArrayList<>();
+            int page = 1;
+            
+            // Tạo danh sách sách tùy theo mã loại hoặc từ khóa
+            if (ml != null && !ml.isEmpty()) {
+                ds = sbo.TimMaLoai(ml); // Tìm kiếm theo mã loại
+            } else {
+                // Phân trang
+                try {
+                    page = Integer.parseInt(request.getParameter("page"));
+                    if (page < 1) page = 1;
+                } catch (NumberFormatException e) {
+                    page = 1;
+                }
+                
+                // Lấy danh sách sách theo từ khóa với phân trang
+                int PageSize = 6; // Số sách mỗi trang
+                ds = sbo.getSach(searchValue, page, PageSize); // Tìm sách với từ khóa và phân trang
             }
 
-            // Phân trang
-            int totalItems = ds.size(); // Tổng số sách
-            int itemsPerPage = 6; // Số sách mỗi trang
-            int currentPage = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
-            int totalPages = (int) Math.ceil((double) totalItems / itemsPerPage);
-            int startIndex = (currentPage - 1) * itemsPerPage;
-            int endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+            // Tính tổng số sách và tổng số trang
+            int totalItems = sbo.getTongSach(searchValue); // Lấy tổng số sách tùy theo tìm kiếm
+            int totalPages = (int) Math.ceil((double) totalItems / 6); // Tính tổng số trang
 
             // Lấy danh sách sách cho trang hiện tại
-            ArrayList<Sach> paginatedList = new ArrayList<>(ds.subList(startIndex, endIndex));
-
-            request.setAttribute("dssach", paginatedList);
-            request.setAttribute("currentPage", currentPage);
+            request.setAttribute("dssach", ds);
+            request.setAttribute("currentPage", page);
             request.setAttribute("totalPages", totalPages);
+
             RequestDispatcher rd = request.getRequestDispatcher("home.jsp");
             rd.forward(request, response);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

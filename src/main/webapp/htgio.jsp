@@ -38,7 +38,11 @@
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
 					<li><a href="homeController">Trang chủ</a></li>
-					<li><a href="htgioController">Giỏ hàng(0)</a></li>
+					<li><a href="htgioController">Giỏ hàng
+					(
+					<%= session.getAttribute("giohangCount") != null ? session.getAttribute("giohangCount") : 0 %>
+					)
+					</a></li>
 					<li><a href="xacnhanController">Xác nhận đặt mua</a></li>
 					<li><a href="lichsuController">Lịch sử mua hàng</a></li>
 				</ul>

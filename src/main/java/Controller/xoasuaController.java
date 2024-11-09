@@ -28,29 +28,43 @@ public class xoasuaController extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		HttpSession session = request.getSession();
-		giohangbo gh = (giohangbo) session.getAttribute("gh");
-		String[] gtck = request.getParameterValues("ck");
-		if (request.getParameter("xoachon") != null) {//Can xoa cac sach da chon
-			for (String ms : gtck)
-				gh.xoa(ms);
-		}
-		
-		String xoamot = request.getParameter("msxoa"); // xoa mot sach
-		if(xoamot != null){
-			gh.xoa(xoamot);
-		}
-		
-		String mssua = request.getParameter("butsuasl");
-		String slsua = request.getParameter(mssua);
-		if (mssua != null) {//Can sua sl
-			gh.Them(mssua, "", (long) 0, Long.parseLong(slsua));
-		}
-		session.setAttribute("gh", gh);
-		response.sendRedirect("htgioController");
-	}
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        giohangbo gh = (giohangbo) session.getAttribute("gh");
+
+        // Lấy danh sách các sản phẩm đã chọn để xóa
+        String[] gtck = request.getParameterValues("ck");
+        if (request.getParameter("xoachon") != null && gtck != null) { // Nếu chọn xóa sản phẩm đã chọn
+            for (String ms : gtck) {
+                gh.xoa(ms); // Gọi phương thức xoa trong giohangbo để xóa sản phẩm
+            }
+        }
+
+        // Xóa một sản phẩm cụ thể theo mã sách
+        String xoamot = request.getParameter("msxoa");
+        if (xoamot != null) {
+            gh.xoa(xoamot); // Gọi phương thức xoa trong giohangbo để xóa sản phẩm
+        }
+
+        // Cập nhật số lượng sản phẩm khi người dùng thay đổi số lượng
+        String mssua = request.getParameter("butsuasl");
+        if (mssua != null) {
+            String slsua = request.getParameter(mssua); // Lấy số lượng mới
+            if (slsua != null) {
+                gh.Them(mssua, "", (long) 0, Long.parseLong(slsua)); // Cập nhật lại số lượng
+            }
+        }
+
+        // Cập nhật lại giỏ hàng trong session
+        session.setAttribute("gh", gh);
+
+        // Cập nhật số lượng giỏ hàng trong session (để hiển thị ở navbar)
+        session.setAttribute("giohangCount", gh.getSoluong());
+
+        // Quay lại trang giỏ hàng
+        response.sendRedirect("htgioController");
+    }
+
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

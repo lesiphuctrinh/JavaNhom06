@@ -23,4 +23,11 @@ public class giohangbo {
 		  for(hang h: ds) s=s+h.getThanhtien();
 		  return s;
 	  }
+	  public int getSoluong() {
+	        int soluong = 0;
+	        for (hang h : ds) {
+	            soluong += h.getSoluong();
+	        }
+	        return soluong;
+	    }
 }

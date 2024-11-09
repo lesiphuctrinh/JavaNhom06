@@ -4,13 +4,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Đăng nhập</title>
+<title>Đăng ký</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <style>
     body {
-        background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+        background: linear-gradient(-45deg, #ffafbd, #ffc3a0, #ffafbd, #ffc3a0);
         background-size: 400% 400%;
         animation: gradientBG 15s ease infinite;
         height: 100vh;
@@ -68,22 +68,34 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">ĐĂNG NHẬP</h2>
+                <h2 class="modal-title">ĐĂNG KÝ</h2>
             </div>
             <div class="modal-body">
-                <form action="loginController" method="post">
+                <form action="signupController" method="post">
                     <div class="form-group">
-                        <label for="dangnhap">Tên đăng nhập:</label>
-                        <input type="text" class="form-control" name="dangnhap" placeholder="Mã đăng nhập" required>
+                        <label for="hoten">Họ và Tên:</label>
+                        <input type="text" class="form-control" name="hoten" placeholder="Nhập họ và tên" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" class="form-control" name="email" placeholder="Nhập email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tendn">Tên đăng nhập:</label>
+                        <input type="text" class="form-control" name="tendn" placeholder="Tên đăng nhập" required>
                     </div>
                     <div class="form-group">
                         <label for="matkhau">Mật khẩu:</label>
-                        <input type="password" class="form-control" name="matkhau" placeholder="Mật khẩu" required>
+                        <input type="password" class="form-control" name="matkhau" placeholder="Nhập mật khẩu" required>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">Đăng nhập</button>
-                    <!-- Thông báo đăng ký -->
+                    <div class="form-group">
+                        <label for="confirm_matkhau">Xác nhận Mật khẩu:</label>
+                        <input type="password" class="form-control" name="confirm_matkhau" placeholder="Nhập lại mật khẩu" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Đăng ký</button>
+                    <!-- Đã có tài khoản -->
                     <div class="text-center" style="margin-top: 15px;">
-                        <p>Bạn chưa có tài khoản? <a href="signupController">Đăng ký</a></p>
+                        <p>Bạn đã có tài khoản? <a href="loginController">Đăng nhập</a></p>
                     </div>
                 </form>
             </div>
