@@ -106,10 +106,10 @@
                     %>
 								<tr>
 									<td><%= ls.getTenSach() %></td>
-									<td><%= ls.getSoLuong() %></td>
+									<td><%= ls.getSoLuongMua()%></td>
 									<td><%= String.format("%,d VND", (int) ls.getGia()) %></td>
 									<td><%= ls.isDaMua() ? "Đã thanh toán" : "Chưa thanh toán" %></td>
-									<td><%= ls.getNgayMua() %></td>
+									<td><%= ls.getNgayMuaFormat() %></td>
 									<td><%= String.format("%,d VND", (int) ls.getThanhTien()) %></td>
 								</tr>
 								<%

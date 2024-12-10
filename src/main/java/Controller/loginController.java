@@ -13,6 +13,7 @@ import javax.websocket.Session;
 
 import khachhangModal.KhachHang;
 import khachhangModal.KhachHangBO;
+import nl.captcha.Captcha;
 
 /**
  * Servlet implementation class loginController
@@ -35,19 +36,39 @@ public class loginController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		try {
+			HttpSession session = request.getSession();
+			Captcha captcha = (Captcha) session.getAttribute(Captcha.NAME);
+			request.setCharacterEncoding("UTF-8");
+			String answer = request.getParameter("answer");
+			
 			String username = request.getParameter("dangnhap");
 			 String password = request.getParameter("matkhau");
+			 
+			 if(session.getAttribute("dem") != null) {
+					int d = (int)session.getAttribute("dem");
+					if(answer != null) {
+						if(d >= 3 && !captcha.isCorrect(answer)) {
+							RequestDispatcher rd = request.getRequestDispatcher("loginAdmin.jsp");
+							rd.forward(request, response);
+						}
+					}
+				}
 				if(username != null && password != null){
 					KhachHangBO khbo = new KhachHangBO();
 					KhachHang kh = khbo.ktdangnhap(username, password);
 					
 					if (kh != null) {
-						HttpSession session = request.getSession();
 						session.setAttribute("dn", kh);
 				        response.sendRedirect("sachController");
 				        return;
 				    }  
 					else
+						if(session.getAttribute("dem") == null) {
+							session.setAttribute("dem", (int) 0);
+						}
+						int d = (int) session.getAttribute("dem");
+						d++;
+						session.setAttribute("dem", d);
 				    	request.setAttribute("tb", "Đăng nhập sai. Vui lòng nhập lại!");
 				}
 				RequestDispatcher rd = request.getRequestDispatcher("login.jsp");

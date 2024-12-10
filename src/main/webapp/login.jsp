@@ -80,6 +80,15 @@
                         <label for="matkhau">Mật khẩu:</label>
                         <input type="password" class="form-control" name="matkhau" placeholder="Mật khẩu" required>
                     </div>
+                    <%
+                    if(session.getAttribute("dem") != null){
+                    	int dem = (int) session.getAttribute("dem");
+                    	if(dem >= 3){
+                    	%>
+                    	<img src="simpleCaptcha.jpg"/>
+                        <input type="text" name="answer"/>
+                  <%} 
+                    	}%>
                     <button type="submit" class="btn btn-primary btn-block">Đăng nhập</button>
                     <!-- Thông báo đăng ký -->
                     <div class="text-center" style="margin-top: 15px;">

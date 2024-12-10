@@ -60,22 +60,12 @@ public class KhachHangDAO {
             makh = generatedKeys.getLong(1); // Lấy khóa chính được sinh ra cho khách hàng mới
         }
 
-        // B3: Tạo câu lệnh SQL để thêm thông tin đăng nhập vào bảng DangNhap
-        String sqlInsertDangNhap = "INSERT INTO DangNhap (TenDangNhap, MatKhau, Quyen) VALUES (?, ?, ?)";
-        PreparedStatement psdn = kn.cn.prepareStatement(sqlInsertDangNhap);
-        psdn.setString(1, tendn);
-        psdn.setString(2, pass);
-        psdn.setInt(3, 1); // Giả sử 1 là quyền người dùng mặc định
-
-        int dangNhapResult = psdn.executeUpdate();
-
         // Đóng tài nguyên
         pskh.close();
-        psdn.close();
         kn.cn.close();
 
         // Nếu cả hai lệnh đều thành công, trả về đối tượng KhachHang mới
-        if (khachHangResult > 0 && dangNhapResult > 0) {
+        if (khachHangResult > 0) {
             return new KhachHang(makh, hoten, null, null, email, tendn, pass);
         }
 

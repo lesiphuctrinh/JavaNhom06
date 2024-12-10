@@ -3,10 +3,10 @@ package giohangModal;
 public class hang {
 	private String masach;
     private String tensach;
-    private Long gia;
-    private Long soluong;
-    private Long thanhtien;
-	public hang(String masach, String tensach, Long gia, Long soluong) {
+    private long gia;
+    private long soluong;
+    private long thanhtien;
+	public hang(String masach, String tensach, long gia, long soluong) {
 		super();
 		this.masach = masach;
 		this.tensach = tensach;
@@ -32,10 +32,10 @@ public class hang {
 	public void setGia(Long gia) {
 		this.gia = gia;
 	}
-	public Long getSoluong() {
+	public long getSoluong() {
 		return soluong;
 	}
-	public void setSoluong(Long soluong) {
+	public void setSoluong(long soluong) {
 		this.soluong = soluong;
 	}
 	public Long getThanhtien() {

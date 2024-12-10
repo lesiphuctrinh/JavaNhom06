@@ -1,10 +1,13 @@
 package lichsuModal;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class lichsu {
     private long makh;         
     private String hoten;            
-    private String ngayMua;      
-    private int soLuong;         
+    private Date ngayMua;      
+    private long soLuongMua;         
     private double gia;          
     private double thanhTien;    
     private String tenSach; 
@@ -16,13 +19,25 @@ public class lichsu {
     }
 
 
-	public lichsu(long makh, String hoten, String ngayMua, int soLuong, double gia, double thanhTien, String tenSach,
+	
+
+
+	public long getSoLuongMua() {
+		return soLuongMua;
+	}
+
+	public void setSoLuongMua(long soLuongMua) {
+		this.soLuongMua = soLuongMua;
+	}
+
+
+	public lichsu(long makh, String hoten, Date ngayMua, long soLuongMua, double gia, double thanhTien, String tenSach,
 			boolean daMua) {
 		super();
 		this.makh = makh;
 		this.hoten = hoten;
 		this.ngayMua = ngayMua;
-		this.soLuong = soLuong;
+		this.soLuongMua = soLuongMua;
 		this.gia = gia;
 		this.thanhTien = thanhTien;
 		this.tenSach = tenSach;
@@ -50,24 +65,23 @@ public class lichsu {
 	}
 
 
-	public String getNgayMua() {
-		return ngayMua;
-	}
+	public Date getNgayMua() {
+        return ngayMua;
+    }
 
+    public void setNgayNhap(Date ngayMua) {
+        this.ngayMua = ngayMua;
+    }
 
-	public void setNgayMua(String ngayMua) {
-		this.ngayMua = ngayMua;
-	}
+    // Phương thức để lấy ngayMuadưới dạng chuỗi đã định dạng
+    public String getNgayMuaFormat() {
+        if (ngayMua != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            return sdf.format(ngayMua);
+        }
+        return null;
+    }
 
-
-	public int getSoLuong() {
-		return soLuong;
-	}
-
-
-	public void setSoLuong(int soLuong) {
-		this.soLuong = soLuong;
-	}
 
 
 	public double getGia() {

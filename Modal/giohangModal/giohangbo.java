@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class giohangbo {
 	public ArrayList<hang> ds= new ArrayList<hang>();
-	  public void Them(String masach, String tensach, Long gia, Long soluong) {
+	  public void Them(String masach, String tensach, long gia, long soluong) {
 		 for(hang h: ds)
 			 if(h.getMasach().equals(masach)) {
 				 h.setSoluong(h.getSoluong()+soluong);
@@ -23,7 +23,7 @@ public class giohangbo {
 		  for(hang h: ds) s=s+h.getThanhtien();
 		  return s;
 	  }
-	  public int getSoluong() {
+	  public long getSoluong() {
 	        int soluong = 0;
 	        for (hang h : ds) {
 	            soluong += h.getSoluong();

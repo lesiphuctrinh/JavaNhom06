@@ -51,7 +51,7 @@ public class xoasuaController extends HttpServlet {
         if (mssua != null) {
             String slsua = request.getParameter(mssua); // Lấy số lượng mới
             if (slsua != null) {
-                gh.Them(mssua, "", (long) 0, Long.parseLong(slsua)); // Cập nhật lại số lượng
+            	 gh.Them(mssua, "", (long) 0, Long.parseLong(slsua)); // Cập nhật lại số lượng
             }
         }
 
